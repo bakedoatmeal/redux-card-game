@@ -8,6 +8,7 @@ const Cards = () => {
   const cards = useSelector(state => state.cards.cards)
   const deck_id = useSelector(state => state.cards.deck_id)
   const value = useSelector(state => state.cards.total_value)
+  const gameStatus = useSelector(state => state.cards.gameStatus)
 
   const cardsDisplay = cards.map((card) => {
     return(
@@ -20,7 +21,9 @@ const Cards = () => {
       <button
         onClick={() => 
          dispatch(draw(deck_id))
-        }>
+        }
+        disabled={gameStatus === 'over'}
+        >
           Draw Card
       </button>
       {cardsDisplay}
