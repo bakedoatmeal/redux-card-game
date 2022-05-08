@@ -1,6 +1,7 @@
 export const DRAW_CARD = 'DRAW_CARD'
 export const GET_DECK = 'GET_DECK'
 export const STAY = 'STAY'
+export const START = 'START'
 
 export const get_deck = () => {
   return async(dispatch) => {
@@ -36,5 +37,11 @@ export const draw = (deck_id, player) => {
 export const stay = () => {
   return {
     type: STAY
+  }
+}
+
+export const start = () => {
+  return {
+    type: START
   }
 }

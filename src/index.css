@@ -13,3 +13,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.card-image {
+  float: left;
+  margin-right: -20%;
+}
+
+.hand-display {
+  display: block;
+  margin-top: 20px;
+  height: 330px;
+}
+
+.dealer {
+}

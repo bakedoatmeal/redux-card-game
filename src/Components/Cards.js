@@ -1,6 +1,6 @@
 import React from "react";
 import {useDispatch, useSelector} from 'react-redux';
-import { draw, get_deck } from "../actions";
+import { draw, get_deck, start } from "../actions";
 import { useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import flipInX from "react-animations/lib/flip-in-x";
@@ -21,7 +21,7 @@ const Cards = () => {
 
   const cardsDisplay = cards.map((card) => {
     return(
-      <FlipInXDiv>
+      <FlipInXDiv className='card-image'>
         <img src={card.image}/>
       </FlipInXDiv>
     )
@@ -29,7 +29,7 @@ const Cards = () => {
 
   const dealerCards = dealer_cards.map((card) => {
     return(
-      <FlipInXDiv>
+      <FlipInXDiv className='card-image'>
         <img src={card.image}/>
       </FlipInXDiv>
     )
@@ -45,13 +45,26 @@ const Cards = () => {
     <div>
       <div className='game-display'>
         <h1>Your cards: {value}</h1>
-        {cardsDisplay}
+        <div className='hand-display'>
+          {cardsDisplay}
+        </div>
         <p>Dealer cards: {dealer_value}</p>
-        {dealerCards}
+        <div className='hand-display dealer'>
+          {dealerCards}
+        </div>
       </div>
       <button
         onClick={() => {
 
+         if (gameStatus === 'waiting') {
+          dispatch(start())
+          dispatch(draw(deck_id, 'player'))
+          // draw a card for the dealer one second after the card for the player
+          delay(500).then(() => dispatch(draw(deck_id, 'dealer')))
+          delay(1500).then(() => dispatch(draw(deck_id, 'player')))
+          delay(2000).then(() => dispatch(draw(deck_id, 'dealer')))
+          return
+        }
 
          dispatch(draw(deck_id, 'player'))
          // draw a card for the dealer one second after the card for the player

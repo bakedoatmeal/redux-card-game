@@ -1,11 +1,11 @@
-import { DRAW_CARD, GET_DECK, STAY } from "../actions"
+import { DRAW_CARD, GET_DECK, STAY, START } from "../actions"
 
 const defaultState = () => {
   return {
     cards: [], 
     deck_id: '', 
     total_value: 0,
-    gameStatus: 'playing',
+    gameStatus: 'waiting',
     dealer_cards: [],
     dealer_value: 0,
   }
@@ -50,6 +50,8 @@ const cardsReducer = (state = defaultState(), action) => {
         console.log('you win!')
       }
       return state
+    case START:
+      return {...state, gameStatus: 'playing'}
     default:
       return state
   }
