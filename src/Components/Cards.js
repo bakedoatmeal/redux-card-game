@@ -2,6 +2,13 @@ import React from "react";
 import {useDispatch, useSelector} from 'react-redux';
 import { draw, get_deck } from "../actions";
 import { useEffect } from "react";
+import styled, { keyframes } from "styled-components";
+import flipInX from "react-animations/lib/flip-in-x";
+
+// set up animation component 
+const FlipInXAnimation = keyframes`${flipInX}`
+const FlipInXDiv = styled.div
+  `animation: 0.7s ${FlipInXAnimation}`
 
 const Cards = () => {
   const dispatch = useDispatch()
@@ -14,15 +21,25 @@ const Cards = () => {
 
   const cardsDisplay = cards.map((card) => {
     return(
-      <img src={card.image}/>
+      <FlipInXDiv>
+        <img src={card.image}/>
+      </FlipInXDiv>
     )
   })
 
   const dealerCards = dealer_cards.map((card) => {
     return(
-      <img src={card.image}/>
+      <FlipInXDiv>
+        <img src={card.image}/>
+      </FlipInXDiv>
     )
   })
+
+
+  // delay a function call by a given amount of milliseconds
+  const delay = (time) => {
+    return new Promise(resolve => setTimeout(resolve, time))
+  }
 
   return (
     <div>
@@ -34,16 +51,11 @@ const Cards = () => {
       </div>
       <button
         onClick={() => {
+
+
          dispatch(draw(deck_id, 'player'))
-
-         // delay a function call by a given amount of milliseconds
-         const delay = (time) => {
-          return new Promise(resolve => setTimeout(resolve, time))
-         }
-
          // draw a card for the dealer one second after the card for the player
          delay(1000).then(() => dispatch(draw(deck_id, 'dealer')))
-
         }
         }
         disabled={gameStatus === 'over'}
