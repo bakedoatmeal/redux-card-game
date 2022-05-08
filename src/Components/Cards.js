@@ -35,14 +35,23 @@ const Cards = () => {
       <button
         onClick={() => {
          dispatch(draw(deck_id, 'player'))
-         dispatch(draw(deck_id, 'dealer'))
+
+         // delay a function call by a given amount of milliseconds
+         const delay = (time) => {
+          return new Promise(resolve => setTimeout(resolve, time))
+         }
+
+         // draw a card for the dealer one second after the card for the player
+         delay(1000).then(() => dispatch(draw(deck_id, 'dealer')))
+
         }
         }
         disabled={gameStatus === 'over'}
         >
           Hit (draw a card)
       </button>
-      <button>
+      <button
+      disabled={gameStatus === 'over'}>
         Stand
       </button>
     </div>

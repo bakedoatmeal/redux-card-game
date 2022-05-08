@@ -44,7 +44,11 @@ const cardsReducer = (state = defaultState(), action) => {
       console.log("deck_id", action.payload)
       return {...state, deck_id: action.payload}
     case STAY:
-
+      if (state.dealer_value > state.value) {
+        console.log('dealer wins!')
+      } else {
+        console.log('you win!')
+      }
       return state
     default:
       return state
