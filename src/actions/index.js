@@ -1,5 +1,6 @@
 export const DRAW_CARD = 'DRAW_CARD'
 export const GET_DECK = 'GET_DECK'
+export const STAY = 'STAY'
 
 export const get_deck = () => {
   return async(dispatch) => {
@@ -17,7 +18,7 @@ export const get_deck = () => {
   }
 }
 
-export const draw = (deck_id) => {
+export const draw = (deck_id, player) => {
   return async (dispatch) => {
     const path = `https://deckofcardsapi.com/api/deck/${deck_id}/draw/?count=1`
     const res = await fetch(path)
@@ -27,7 +28,13 @@ export const draw = (deck_id) => {
 
     dispatch({
       type: DRAW_CARD, 
-      payload: card
+      payload: {card, player}
     })
+  }
+}
+
+export const stay = () => {
+  return {
+    type: STAY
   }
 }

@@ -1,4 +1,4 @@
-import { DRAW_CARD, GET_DECK } from "../actions"
+import { DRAW_CARD, GET_DECK, STAY } from "../actions"
 
 const defaultState = () => {
   return {
@@ -6,6 +6,8 @@ const defaultState = () => {
     deck_id: '', 
     total_value: 0,
     gameStatus: 'playing',
+    dealer_cards: [],
+    dealer_value: 0,
   }
 }
 
@@ -13,29 +15,37 @@ const cardsReducer = (state = defaultState(), action) => {
   switch(action.type) {
     case DRAW_CARD:
 
+      let {card, player} = action.payload
+
       let newValue = 0
-      if (action.payload.value === 'ACE'){
-        newValue = 1
-      } else if (action.payload.value === 'QUEEN') {
-        newValue = 12
-      } else if (action.payload.value === 'KING'){
-        newValue = 13
-      } else if (action.payload.value === 'JACK') {
+      if (card.value === 'ACE'){
         newValue = 11
+      } else if (card.value === 'QUEEN' || card.value === 'KING' || card.value === 'JACK') {
+        newValue = 10
       } else {
-        newValue = parseInt(action.payload.value)
-      }
-      newValue = state.total_value + newValue
-
-      if (newValue > 21) {
-        alert('Game over!')
-        return {...state, cards: [...state.cards, action.payload], total_value: newValue, gameStatus: 'over'}
+        newValue = parseInt(card.value)
       }
 
-      return {...state, cards: [...state.cards, action.payload], total_value: newValue}
+      if (player === 'player') {
+
+        newValue = state.total_value + newValue
+
+        if (newValue > 21) {
+          alert('Game over!')
+          return {...state, cards: [...state.cards, card], total_value: newValue, gameStatus: 'over'}
+        }
+
+        return {...state, cards: [...state.cards, card], total_value: newValue}
+      } else {
+        const newDealerValue = state.dealer_value + newValue
+        return {...state, dealer_cards: [...state.dealer_cards, card], dealer_value: newDealerValue}
+      }
     case GET_DECK:
       console.log("deck_id", action.payload)
       return {...state, deck_id: action.payload}
+    case STAY:
+
+      return state
     default:
       return state
   }

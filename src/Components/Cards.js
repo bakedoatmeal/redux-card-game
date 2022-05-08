@@ -9,6 +9,8 @@ const Cards = () => {
   const deck_id = useSelector(state => state.cards.deck_id)
   const value = useSelector(state => state.cards.total_value)
   const gameStatus = useSelector(state => state.cards.gameStatus)
+  const dealer_cards = useSelector(state => state.cards.dealer_cards)
+  const dealer_value = useSelector(state => state.cards.dealer_value)
 
   const cardsDisplay = cards.map((card) => {
     return(
@@ -16,19 +18,33 @@ const Cards = () => {
     )
   })
 
+  const dealerCards = dealer_cards.map((card) => {
+    return(
+      <img src={card.image}/>
+    )
+  })
+
   return (
     <div>
+      <div className='game-display'>
+        <h1>Your cards: {value}</h1>
+        {cardsDisplay}
+        <p>Dealer cards: {dealer_value}</p>
+        {dealerCards}
+      </div>
       <button
-        onClick={() => 
-         dispatch(draw(deck_id))
+        onClick={() => {
+         dispatch(draw(deck_id, 'player'))
+         dispatch(draw(deck_id, 'dealer'))
+        }
         }
         disabled={gameStatus === 'over'}
         >
-          Draw Card
+          Hit (draw a card)
       </button>
-      {cardsDisplay}
-      <h1>{value}</h1>
-      
+      <button>
+        Stand
+      </button>
     </div>
   )
 
