@@ -31,7 +31,7 @@ const cardsReducer = (state = defaultState(), action) => {
         newValue = state.total_value + newValue
 
         if (newValue > 21) {
-          alert('Game over!')
+          alert('You busted! Game over!')
           return {...state, cards: [...state.cards, card], total_value: newValue, gameStatus: 'over'}
         }
 

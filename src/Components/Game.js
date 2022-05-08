@@ -10,12 +10,13 @@ const Game  = () => {
 
   useEffect(() => {
     console.log('starting up')
+    console.log(id)
     dispatch(get_deck())
   }, [])
 
   return (
     <>
-      <p>Deck ID: {id}</p>
+      <h1>Blackjack</h1>
       <Cards></Cards>
     </>
   )
