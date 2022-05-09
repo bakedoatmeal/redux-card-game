@@ -1,4 +1,4 @@
-import { DRAW_CARD, GET_DECK, STAY, START } from "../actions"
+import { DRAW_CARD, GET_DECK, STAND, START, RESTART, CHECK_WINNER } from "../actions"
 
 const defaultState = () => {
   return {
@@ -8,6 +8,7 @@ const defaultState = () => {
     gameStatus: 'waiting',
     dealer_cards: [],
     dealer_value: 0,
+    message: ''
   }
 }
 
@@ -43,15 +44,22 @@ const cardsReducer = (state = defaultState(), action) => {
     case GET_DECK:
       console.log("deck_id", action.payload)
       return {...state, deck_id: action.payload}
-    case STAY:
-      if (state.dealer_value > state.value) {
-        console.log('dealer wins!')
-      } else {
-        console.log('you win!')
-      }
-      return state
+    case STAND:
+      return {...state, gameStatus: 'dealer_turn'}
     case START:
       return {...state, gameStatus: 'playing'}
+    case RESTART: 
+      return {...defaultState()}
+    case CHECK_WINNER: 
+      let message = ''
+      if (state.dealer_value > state.total_value) {
+        message = `You have ${state.total_value} and the dealer has ${state.dealer_value} - Dealer wins!`
+      } else if (state.dealer_value === state.total_value){
+        message = `You have ${state.total_value} and the dealer has ${state.dealer_value} - Standoff!`
+      } else {
+        message = `You have ${state.total_value} and the dealer has ${state.dealer_value} - You win!`
+      }
+      return {...state, message: message}
     default:
       return state
   }

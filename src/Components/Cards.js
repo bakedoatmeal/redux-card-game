@@ -1,6 +1,6 @@
 import React from "react";
 import {useDispatch, useSelector} from 'react-redux';
-import { draw, get_deck, start } from "../actions";
+import { draw, get_deck, start, stand, check_winner } from "../actions";
 import { useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import flipInX from "react-animations/lib/flip-in-x";
@@ -27,7 +27,14 @@ const Cards = () => {
     )
   })
 
-  const dealerCards = dealer_cards.map((card) => {
+  const dealerCards = dealer_cards.map((card, index) => {
+    if (index === 1 && gameStatus === 'playing') {
+      return(
+        <FlipInXDiv className='card-image'>
+          <img alt='card-back' src='https://github.com/crobertsbmw/deckofcards/blob/master/static/img/back.png?raw=true'/>
+        </FlipInXDiv>
+      )
+    }
     return(
       <FlipInXDiv className='card-image'>
         <img src={card.image}/>
@@ -41,6 +48,20 @@ const Cards = () => {
     return new Promise(resolve => setTimeout(resolve, time))
   }
 
+  useEffect(() => {
+    console.log(gameStatus)
+    if (gameStatus === 'dealer_turn') {
+      console.log(dealer_value)
+      if (dealer_value < 17) {
+        console.log('drawing dealer card')
+        dispatch(draw(deck_id, 'dealer'))
+      } else {
+        dispatch(check_winner())
+      }
+    } 
+  }, [gameStatus, dealer_value])
+
+
   return (
     <div>
       <div className='game-display'>
@@ -48,7 +69,7 @@ const Cards = () => {
         <div className='hand-display'>
           {cardsDisplay}
         </div>
-        <p>Dealer cards: {dealer_value}</p>
+        <p>Dealer cards:</p>
         <div className='hand-display dealer'>
           {dealerCards}
         </div>
@@ -67,8 +88,6 @@ const Cards = () => {
         }
 
          dispatch(draw(deck_id, 'player'))
-         // draw a card for the dealer one second after the card for the player
-         delay(1000).then(() => dispatch(draw(deck_id, 'dealer')))
         }
         }
         disabled={gameStatus === 'over'}
@@ -76,6 +95,9 @@ const Cards = () => {
           Hit (draw a card)
       </button>
       <button
+      onClick={() => {
+        dispatch(stand())
+      }}
       disabled={gameStatus === 'over'}>
         Stand
       </button>
