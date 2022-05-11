@@ -32,8 +32,9 @@ const cardsReducer = (state = defaultState(), action) => {
         newValue = state.total_value + newValue
 
         if (newValue > 21) {
-          alert('You busted! Game over!')
-          return {...state, cards: [...state.cards, card], total_value: newValue, gameStatus: 'over'}
+          return {...state, message: 'You busted! Game over', cards: [...state.cards, card], total_value: newValue, gameStatus: 'over'}
+        } else if (newValue === 21) {
+          return {...state, message: '21!!! You win!', cards: [...state.cards, card], total_value: newValue, gameStatus: 'over'}
         }
 
         return {...state, cards: [...state.cards, card], total_value: newValue}
@@ -52,7 +53,9 @@ const cardsReducer = (state = defaultState(), action) => {
       return {...defaultState()}
     case CHECK_WINNER: 
       let message = ''
-      if (state.dealer_value > state.total_value) {
+      if (state.dealer_value > 21) {
+        message = 'The dealer busted! You win!'
+      } else if (state.dealer_value > state.total_value) {
         message = `You have ${state.total_value} and the dealer has ${state.dealer_value} - Dealer wins!`
       } else if (state.dealer_value === state.total_value){
         message = `You have ${state.total_value} and the dealer has ${state.dealer_value} - Standoff!`

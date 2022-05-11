@@ -54,7 +54,7 @@ const Cards = () => {
       console.log(dealer_value)
       if (dealer_value < 17) {
         console.log('drawing dealer card')
-        dispatch(draw(deck_id, 'dealer'))
+        delay(1000).then(() => dispatch(draw(deck_id, 'dealer')))
       } else {
         dispatch(check_winner())
       }
@@ -65,7 +65,7 @@ const Cards = () => {
   return (
     <div>
       <div className='game-display'>
-        <h1>Your cards: {value}</h1>
+        <h2>Your cards: {value}</h2>
         <div className='hand-display'>
           {cardsDisplay}
         </div>
@@ -74,33 +74,35 @@ const Cards = () => {
           {dealerCards}
         </div>
       </div>
-      <button
-        onClick={() => {
+      <div className='btn-display'>
+        <button
+          onClick={() => {
 
-         if (gameStatus === 'waiting') {
-          dispatch(start())
+          if (gameStatus === 'waiting') {
+            dispatch(start())
+            dispatch(draw(deck_id, 'player'))
+            // draw a card for the dealer one second after the card for the player
+            delay(500).then(() => dispatch(draw(deck_id, 'dealer')))
+            delay(1500).then(() => dispatch(draw(deck_id, 'player')))
+            delay(2000).then(() => dispatch(draw(deck_id, 'dealer')))
+            return
+          }
+
           dispatch(draw(deck_id, 'player'))
-          // draw a card for the dealer one second after the card for the player
-          delay(500).then(() => dispatch(draw(deck_id, 'dealer')))
-          delay(1500).then(() => dispatch(draw(deck_id, 'player')))
-          delay(2000).then(() => dispatch(draw(deck_id, 'dealer')))
-          return
-        }
-
-         dispatch(draw(deck_id, 'player'))
-        }
-        }
-        disabled={gameStatus === 'over'}
-        >
-          Hit (draw a card)
-      </button>
-      <button
-      onClick={() => {
-        dispatch(stand())
-      }}
-      disabled={gameStatus === 'over'}>
-        Stand
-      </button>
+          }
+          }
+          disabled={gameStatus !== 'playing' && gameStatus !== 'waiting'}
+          >
+            Hit (draw a card)
+        </button>
+        <button
+        onClick={() => {
+          dispatch(stand())
+        }}
+        disabled={gameStatus !== 'playing'}>
+          Stand
+        </button>
+      </div>
     </div>
   )
 

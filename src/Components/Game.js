@@ -17,8 +17,8 @@ const Game  = () => {
 
   return (
     <>
-      <h1>Blackjack</h1>
-      <h1 className='message'>{message !== '' && message}</h1>
+      <h1>♦️♣️ Blackjack ♠️❤️</h1>
+      <h2 className='message'>{message !== '' && message}</h2>
       <Cards></Cards>
       <button
         onClick={() => {

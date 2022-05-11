@@ -1,12 +1,11 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Helvetica';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: rgb(53, 101, 77);
   color: white;
+  font-size: medium;
 }
 
 code {
@@ -26,4 +25,32 @@ code {
 }
 
 .dealer {
+}
+
+.message, .game-display {
+  background-color: rgb(15, 60, 37);
+  padding: 20px;
+  margin: 10px 9vw;
+  border-radius: 10px;
+  width: 80vw;
+}
+
+h1 {
+  text-align: center;
+}
+
+.btn-display {
+  display: flex;
+} 
+
+button {
+  align-self: center;
+  margin: 10px;
+  padding: 10px;
+  background-color: rgb(15, 60, 37);
+  color: white;
+  font-weight: bold;
+  border: white 1px solid;
+  font-size: 20px;
+  border-radius: 4px;
 }
