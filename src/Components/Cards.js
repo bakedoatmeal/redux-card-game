@@ -1,14 +1,7 @@
 import React from "react";
 import {useDispatch, useSelector} from 'react-redux';
-import { draw, get_deck, start, stand, check_winner } from "../actions";
+import { draw, check_winner } from "../actions";
 import { useEffect } from "react";
-import styled, { keyframes } from "styled-components";
-import flipInX from "react-animations/lib/flip-in-x";
-
-// set up animation component 
-const FlipInXAnimation = keyframes`${flipInX}`
-const FlipInXDiv = styled.div
-  `animation: 0.7s ${FlipInXAnimation}`
 
 const Cards = () => {
   const dispatch = useDispatch()
@@ -21,28 +14,28 @@ const Cards = () => {
 
   const cardsDisplay = cards.map((card) => {
     return(
-      <FlipInXDiv className='card-image'>
-        <img src={card.image}/>
-      </FlipInXDiv>
+      <div className='card-image'>
+        <img className="playingCard" src={card.image}/>
+      </div>
     )
   })
 
   const dealerCards = dealer_cards.map((card, index) => {
     if (index === 1 && gameStatus === 'playing') {
       return(
-        <FlipInXDiv className='card-image'>
-          <img alt='card-back' src='https://github.com/crobertsbmw/deckofcards/blob/master/static/img/back.png?raw=true'/>
-        </FlipInXDiv>
+        <div className='card-image'>
+          <img className="playingCard" alt='card-back' src='https://github.com/crobertsbmw/deckofcards/blob/master/static/img/back.png?raw=true'/>
+        </div>
       )
     }
     return(
-      <FlipInXDiv className='card-image'>
-        <img src={card.image}/>
-      </FlipInXDiv>
+      <div className='card-image'>
+        <img className="playingCard" src={card.image}/>
+      </div>
     )
   })
 
-
+  console.log(dealerCards)
   // delay a function call by a given amount of milliseconds
   const delay = (time) => {
     return new Promise(resolve => setTimeout(resolve, time))
@@ -63,47 +56,19 @@ const Cards = () => {
 
 
   return (
-    <div>
+    <>
+    <div className='board-1'></div>
       <div className='game-display'>
         <h2>Your cards: {value}</h2>
         <div className='hand-display'>
           {cardsDisplay}
         </div>
-        <p>Dealer cards:</p>
+        <h2>Dealer cards:</h2>
         <div className='hand-display dealer'>
           {dealerCards}
         </div>
       </div>
-      <div className='btn-display'>
-        <button
-          onClick={() => {
-
-          if (gameStatus === 'waiting') {
-            dispatch(start())
-            dispatch(draw(deck_id, 'player'))
-            // draw a card for the dealer one second after the card for the player
-            delay(500).then(() => dispatch(draw(deck_id, 'dealer')))
-            delay(1500).then(() => dispatch(draw(deck_id, 'player')))
-            delay(2000).then(() => dispatch(draw(deck_id, 'dealer')))
-            return
-          }
-
-          dispatch(draw(deck_id, 'player'))
-          }
-          }
-          disabled={gameStatus !== 'playing' && gameStatus !== 'waiting'}
-          >
-            Hit (draw a card)
-        </button>
-        <button
-        onClick={() => {
-          dispatch(stand())
-        }}
-        disabled={gameStatus !== 'playing'}>
-          Stand
-        </button>
-      </div>
-    </div>
+    </>
   )
 
 }
